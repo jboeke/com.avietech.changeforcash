@@ -10,8 +10,8 @@
   </maintainer>
   <urls>
     <url desc="Main Extension Page">https://github.com/jboeke/com.avietech.changeforcash</url>
-    <url desc="Documentation">https://github.com/jboeke/com.avietech.changeforcash</url>
-    <url desc="Support">https://github.com/jboeke/com.avietech.changeforcash</url>
+    <url desc="Documentation">https://jboeke.github.io/com.avietech.changeforcash/</url>
+    <url desc="Support">https://github.com/jboeke/com.avietech.changeforcash/issues</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
   <releaseDate>2016-11-30</releaseDate>
