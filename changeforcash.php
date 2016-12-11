@@ -2,19 +2,25 @@
 
 require_once 'changeforcash.civix.php';
 
+function changeforcash_civicrm_buildAmount($pageType, &$form, &$amount) {
+  // Show calculator when a price set is loaded
+  echo "<script>document.getElementById('calcchange').style.display = 'block';</script>";
+}
+
 function changeforcash_civicrm_buildForm($formName, &$form) {
   
   //printDebugInfo($formName, $form);
 
   if ($formName == 'CRM_Event_Form_Participant') {
-    if (intval($form->_priceSetId) > 0) {
-      // When priceset is loaded show calculator
-      echo "<script>document.getElementById('calcchange').style.display = 'block';</script>";
-    } else {
-      // Initial calculator load when parent event form is loaded
-      CRM_Core_Region::instance('page-body')->add(array('template' => 'changeforcash.tpl'));
+    $action = $form->getAction(); 
+    if ($action == CRM_Core_Action::ADD || $action == CRM_Core_Action::UPDATE)
+    {
+      if (intval($form->_priceSetId) == 0) {
+        CRM_Core_Region::instance('page-body')->add(array('template' => 'changeforcash.tpl'));
+      }
     }
   }
+
 }
 
 function printDebugInfo($formName, &$form) {
@@ -201,3 +207,4 @@ function changeforcash_civicrm_navigationMenu(&$menu) {
   ));
   _changeforcash_civix_navigationMenu($menu);
 } // */
+
