@@ -1,40 +1,37 @@
 <?php
 
 require_once 'changeforcash.civix.php';
+include_once 'avietech_debug.php';
 
 function changeforcash_civicrm_buildAmount($pageType, &$form, &$amount) {
+  // fdebug('changeforcash_civicrm_buildAmount (' . $form->_priceSetId . '): ');
+  
   // Show calculator when a price set is loaded
-  echo "<script>document.getElementById('calcchange').style.display = 'block';</script>";
+  if (intval($form->_priceSetId) > 0) {
+    echo "<script>document.getElementById('calcchange').style.display = 'block';</script>";
+  }
 }
 
 function changeforcash_civicrm_buildForm($formName, &$form) {
-  
-  //printDebugInfo($formName, $form);
+    //$debugMessage .=  'changeforcash_civicrm_buildForm (' . $formName . ')' . "\n";
 
-  if ($formName == 'CRM_Event_Form_Participant') {
-    $action = $form->getAction(); 
-    if ($action == CRM_Core_Action::ADD || $action == CRM_Core_Action::UPDATE)
+    // For now, just add this to new and updated Event registrations
+    $action = $form->getAction();
+
+    if ($formName == 'CRM_Event_Form_Participant' && ($action == CRM_Core_Action::ADD || $action == CRM_Core_Action::UPDATE))
     {
+      //$debugMessage .= 'ADD or UPDATE'. "\n";
+      // Only load the template when the parent form is loaded.
+      // Don't try to load it again when the price set is also loaded.
       if (intval($form->_priceSetId) == 0) {
+        //$debugMessage .= 'No priceset'. "\n";
         CRM_Core_Region::instance('page-body')->add(array('template' => 'changeforcash.tpl'));
       }
     }
-  }
 
+    //fdebug($debugMessage);
 }
 
-function printDebugInfo($formName, &$form) {
-  echo '<h1>FORM LOAD: ' . $formName . '</h1>';
-  echo "<script>console.log('Form Name: " . $formName . "' );</script>";
-  echo "<script>console.log('Form URL: " . $form->_urlPath . "' );</script>";
-
-  $vars = get_object_vars($form);
-  echo '<pre>'; 
-  print_r($vars); 
-  echo '</pre>';
-}
-
-// Hooks for future use?
 /*
 function changeforcash_civicrm_alterContent(&$content, $context, $tplName, &$object) {
   //if($context == "page") {
